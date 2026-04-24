@@ -14,8 +14,15 @@ public class Show {
     private Status status;
     private Integer rating;
 
-    //public void setUser(User user) {this.user = user;} ?
-    public void setTitle(String title) {this.title = title;}
+    protected Show() {}
+
+    public Show(User user, String title, Status status) {
+        this.user = user;
+        this.title = title;
+        this.status = status;
+    }
+
+    public void setUser (User user) {this.user = user;}
     public void setStatus(String status) {this.status = Status.fromString(status);}
     public void setRating(Integer rating) {this.rating = rating;}
 

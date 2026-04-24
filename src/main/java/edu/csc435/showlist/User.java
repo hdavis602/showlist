@@ -13,10 +13,17 @@ public class User {
     @OneToMany
     private List<Show> shows;
 
-    public void setUsername (String username) {this.username = username;}
-    public void setPasswordHash(String passwordHash) {this.passwordHash = passwordHash;}
+    protected User() {}
+
+    public User(String username, String passwordHash) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+    }
+
+    public void setShows (List<Show> shows) {this.shows = shows;}
 
     public UUID uid() {return uid;}
     public String username() {return username;}
     public String password_hash() {return passwordHash;}
+    public List<Show> shows() {return shows;}
 }

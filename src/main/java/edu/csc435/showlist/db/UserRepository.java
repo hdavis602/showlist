@@ -1,10 +1,10 @@
-package edu.csc435.showlist;
+package edu.csc435.showlist.db;
 
-import java.util.*;
+import edu.csc435.showlist.User;
+
 import org.springframework.data.repository.*;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import java.util.*;
 
 public interface UserRepository extends PagingAndSortingRepository<User, UUID>, CrudRepository<User, UUID> {
     User findByUsername (String username);
-    User findByUid(UUID uid);
 }
