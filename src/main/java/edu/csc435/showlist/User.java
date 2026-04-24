@@ -13,13 +13,8 @@ public class User {
     @OneToMany
     private List<Show> shows;
 
-    public void setUsername (String username) {
-        this.username = username;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
+    public void setUsername (String username) {this.username = username;}
+    public void setPasswordHash(String passwordHash) {this.passwordHash = passwordHash;}
 
     public UUID uid() {return uid;}
     public String username() {return username;}
