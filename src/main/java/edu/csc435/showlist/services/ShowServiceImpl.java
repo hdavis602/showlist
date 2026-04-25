@@ -7,6 +7,7 @@ import edu.csc435.showlist.db.ShowRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
+@Service
 public class ShowServiceImpl implements ShowService {
 
     private final ShowRepository showRepository;
@@ -32,23 +33,14 @@ public class ShowServiceImpl implements ShowService {
 
     @Override
     public Show updateShow(User user, UUID showId, String status, Integer rating) {
-        if (showId == null)
-            throw new BadRequestException("Missing or invalid show ID.");
-
-        if (status == null && rating == null)
-            throw new BadRequestException("No fields provided to update.");
+        if (showId == null || (status == null && rating == null)) throw new BadRequestException("Invalid input.");
 
         Show show = showRepository.findById(showId)
                 .orElseThrow(() -> new NotFoundException("Show not found."));
 
-        if (!show.user().uid().equals(user.uid()))
-            throw new UnauthorizedException("Unauthorized. Please log in.");
-
-        if (status != null)
-            show.setStatus(status);
-
-        if (rating != null)
-            show.setRating(rating);
+        if (!show.user().uid().equals(user.uid())) throw new UnauthorizedException("Unauthorized. Please log in.");
+        if (status != null) show.setStatus(status);
+        if (rating != null) show.setRating(rating);
 
         return showRepository.save(show);
     }

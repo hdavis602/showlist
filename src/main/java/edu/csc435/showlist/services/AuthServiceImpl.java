@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
         if (username == null || password_hash == null) {
             throw new BadRequestException("Invalid input.");
         }
-        if (userRepository.findByUsername(username) != null) {
+        if (userRepository.findByUsername(username).isPresent()) {
             throw new BadRequestException("Username already exists.");
         }
 
@@ -39,10 +39,10 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Invalid input.");
         }
 
-        User user = userRepository.findByUsername(username);
-        if (user == null || !user.password_hash().equals(password_hash)) {
-            throw new UnauthorizedException("Invalid username or password.");
-        }
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UnauthorizedException("Invalid username or password."));
+
+        if (!user.password_hash().equals(password_hash)) throw new UnauthorizedException("Invalid username or password.");
 
         sessions.put(UUID.randomUUID(), user.uid());
 
@@ -59,13 +59,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User getUserFromSession(UUID sessionId) {
         UUID uid = sessions.get(sessionId);
-        if (uid == null) {
+        if (uid == null)
             throw new UnauthorizedException("Unauthorized. Please log in.");
-        }
 
-        User user = userRepository.findById(uid);
-        if (user == null) {
-            throw new UnauthorizedException("Unauthorized. Please log in.");
-        } else return user;
+        return userRepository.findById(uid)
+                .orElseThrow(() -> new UnauthorizedException("Unauthorized. Please log in."));
     }
+
 }

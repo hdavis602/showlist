@@ -6,5 +6,5 @@ import org.springframework.data.repository.*;
 import java.util.*;
 
 public interface UserRepository extends PagingAndSortingRepository<User, UUID>, CrudRepository<User, UUID> {
-    User findByUsername (String username);
+    Optional<User> findByUsername (String username);
 }
