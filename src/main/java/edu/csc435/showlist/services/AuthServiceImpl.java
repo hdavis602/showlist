@@ -12,8 +12,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 
-    //placeholder for proper Auth
-    private final Map<UUID, UUID> sessions = new LinkedHashMap<>();
+//    private final Map<UUID, UUID> sessions = new LinkedHashMap<>();
 
     public AuthServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -44,26 +43,30 @@ public class AuthServiceImpl implements AuthService {
 
         if (!user.password_hash().equals(password_hash)) throw new UnauthorizedException("Invalid username or password.");
 
-        sessions.put(UUID.randomUUID(), user.uid());
+//        sessions.put(UUID.randomUUID(), user.uid());
 
         return user;
     }
 
-    @Override
-    public void logout(UUID sessionId) {
-        if (!sessions.containsKey(sessionId)) {
-            throw new UnauthorizedException("Invalid session.");
-        } else sessions.remove(sessionId);
-    }
+//    @Override
+//    public void logout() {
+//        if (!sessions.containsKey(sessionId)) {
+//            throw new UnauthorizedException("Invalid session.");
+//        } else sessions.remove(sessionId);
+//    }
+
+//    @Override
+//    public User getUserFromSession(UUID sessionId) {
+//        UUID uid = sessions.get(sessionId);
+//        if (uid == null)
+//            throw new UnauthorizedException("Unauthorized. Please log in.");
+//
+//        return userRepository.findById(uid)
+//                .orElseThrow(() -> new UnauthorizedException("Unauthorized. Please log in."));
+//    }
 
     @Override
-    public User getUserFromSession(UUID sessionId) {
-        UUID uid = sessions.get(sessionId);
-        if (uid == null)
-            throw new UnauthorizedException("Unauthorized. Please log in.");
-
-        return userRepository.findById(uid)
-                .orElseThrow(() -> new UnauthorizedException("Unauthorized. Please log in."));
+    public User getUser(UUID uid) {
+        return userRepository.findById(uid).orElseThrow(() -> new UnauthorizedException("Invalid user id."));
     }
-
 }
