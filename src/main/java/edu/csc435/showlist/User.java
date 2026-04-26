@@ -1,5 +1,6 @@
 package edu.csc435.showlist;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.*;
 
@@ -10,6 +11,7 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID uid;
     private String username;
+    @JsonIgnore
     private String passwordHash;
     @OneToMany(mappedBy = "user")
     private List<Show> shows;

@@ -35,8 +35,7 @@ public class ShowServiceImpl implements ShowService {
     public Show updateShow(User user, UUID showId, String status, Integer rating) {
         if (showId == null || (status == null && rating == null)) throw new BadRequestException("Invalid input.");
 
-        Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new NotFoundException("Show not found."));
+        Show show = showRepository.findById(showId).orElseThrow(() -> new NotFoundException("Show not found."));
 
         if (!show.getUser().getUid().equals(user.getUid())) throw new UnauthorizedException("Unauthorized. Please log in.");
         if (status != null) show.setStatus(status);
@@ -50,8 +49,7 @@ public class ShowServiceImpl implements ShowService {
         if (showId == null)
             throw new BadRequestException("Missing or invalid show ID.");
 
-        Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new NotFoundException("Show not found."));
+        Show show = showRepository.findById(showId).orElseThrow(() -> new NotFoundException("Show not found."));
 
         if (!show.getUser().getUid().equals(user.getUid()))
             throw new UnauthorizedException("Unauthorized. Please log in.");
@@ -64,8 +62,7 @@ public class ShowServiceImpl implements ShowService {
         if (showId == null)
             throw new BadRequestException("Missing or invalid show ID.");
 
-        Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new NotFoundException("Show not found."));
+        Show show = showRepository.findById(showId).orElseThrow(() -> new NotFoundException("Show not found."));
 
         if (!show.getUser().getUid().equals(user.getUid()))
             throw new UnauthorizedException("Unauthorized. Please log in.");

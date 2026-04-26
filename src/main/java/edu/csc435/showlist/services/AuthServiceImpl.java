@@ -39,8 +39,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Invalid input.");
         }
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UnauthorizedException("Invalid username or password."));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UnauthorizedException("Invalid username or password."));
 
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new UnauthorizedException("Invalid username or password.");

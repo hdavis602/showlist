@@ -22,7 +22,7 @@ public class ShowController {
         this.authService = authService;
     }
 
-    @PostMapping("/getshows")
+    @GetMapping
     public ResponseEntity<?> getShows(@RequestBody Map<String, String> body) {
         UUID uid = UUID.fromString(body.get("uid"));
         User user = authService.getUser(uid);
@@ -32,9 +32,8 @@ public class ShowController {
         return ResponseEntity.ok(shows);
     }
 
-    @PostMapping("/getshow/{showId}")
+    @GetMapping("/{showId}")
     public ResponseEntity<?> getShow(@PathVariable UUID showId, @RequestBody Map<String, String> body) {
-
         UUID uid = UUID.fromString(body.get("uid"));
         User user = authService.getUser(uid);
 
@@ -53,18 +52,22 @@ public class ShowController {
 
         Show show = showService.addShow(user, title, status);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("showId", show.getShowId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("showId", show.getShowId()));
     }
 
-    @PutMapping("/updateshow/{showId}")
+    @PatchMapping("/{showId}")
     public ResponseEntity<?> updateShow(@PathVariable UUID showId, @RequestBody Map<String, Object> body) {
-
         UUID uid = UUID.fromString((String) body.get("uid"));
-        String status = (String) body.get("status");
-        Integer rating = (body.get("rating") != null)
-                ? (Integer) body.get("rating")
-                : null;
+
+        String status = null;
+        if (body.get("status") != null) {
+            status = (String) body.get("status");
+        }
+
+        Integer rating = null;
+        if (body.get("rating") != null) {
+            rating = (Integer) body.get("rating");
+        }
 
         User user = authService.getUser(uid);
 
@@ -73,9 +76,8 @@ public class ShowController {
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/deleteshow/{showId}")
+    @DeleteMapping("/{showId}")
     public ResponseEntity<?> deleteShow(@PathVariable UUID showId, @RequestBody Map<String, String> body) {
-
         UUID uid = UUID.fromString(body.get("uid"));
         User user = authService.getUser(uid);
 

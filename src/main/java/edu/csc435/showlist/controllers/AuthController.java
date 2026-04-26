@@ -34,7 +34,7 @@ public class AuthController {
 
         User user = authService.login(username, password);
 
-        return ResponseEntity.ok(Map.of("userId", user.getUid()));
+        return ResponseEntity.ok(Map.of("uid", user.getUid()));
     }
 
     @DeleteMapping("/logout")
