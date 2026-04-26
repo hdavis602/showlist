@@ -10,7 +10,7 @@ public class User {
     private UUID uid;
     private String username;
     private String passwordHash;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Show> shows;
 
     protected User() {}
@@ -22,8 +22,8 @@ public class User {
 
     public void setShows (List<Show> shows) {this.shows = shows;}
 
-    public UUID uid() {return uid;}
-    public String username() {return username;}
-    public String password_hash() {return passwordHash;}
-    public List<Show> shows() {return shows;}
+    public UUID getUid() {return uid;}
+    public String getUsername() {return username;}
+    public String getPasswordHash() {return passwordHash;}
+    public List<Show> getShows() {return shows;}
 }

@@ -26,9 +26,9 @@ public class Show {
     public void setStatus(String status) {this.status = Status.fromString(status);}
     public void setRating(Integer rating) {this.rating = rating;}
 
-    public UUID showId () {return showId;}
-    public User user() {return user;}
-    public String title() {return title;}
-    public Status status() {return status;}
-    public Integer rating() {return rating;}
+    public UUID getShowId() {return showId;}
+    public User getUser() {return user;}
+    public String getTitle() {return title;}
+    public Status getStatus() {return status;}
+    public Integer getRating() {return rating;}
 }

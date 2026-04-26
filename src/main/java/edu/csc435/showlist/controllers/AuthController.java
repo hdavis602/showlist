@@ -2,7 +2,6 @@ package edu.csc435.showlist.controllers;
 
 import edu.csc435.showlist.User;
 import edu.csc435.showlist.services.AuthService;
-import edu.csc435.showlist.exceptions.*;
 
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class AuthController {
 
         User user = authService.register(username, password);
 
-        return ResponseEntity.ok(Map.of("uid", user.uid()));
+        return ResponseEntity.ok(Map.of("uid", user.getUid()));
     }
 
     @PostMapping("/login")
@@ -35,7 +34,7 @@ public class AuthController {
 
         User user = authService.login(username, password);
 
-        return ResponseEntity.ok(Map.of("userId", user.uid()));
+        return ResponseEntity.ok(Map.of("userId", user.getUid()));
     }
 
     @DeleteMapping("/logout")

@@ -38,7 +38,7 @@ public class ShowServiceImpl implements ShowService {
         Show show = showRepository.findById(showId)
                 .orElseThrow(() -> new NotFoundException("Show not found."));
 
-        if (!show.user().uid().equals(user.uid())) throw new UnauthorizedException("Unauthorized. Please log in.");
+        if (!show.getUser().getUid().equals(user.getUid())) throw new UnauthorizedException("Unauthorized. Please log in.");
         if (status != null) show.setStatus(status);
         if (rating != null) show.setRating(rating);
 
@@ -53,7 +53,7 @@ public class ShowServiceImpl implements ShowService {
         Show show = showRepository.findById(showId)
                 .orElseThrow(() -> new NotFoundException("Show not found."));
 
-        if (!show.user().uid().equals(user.uid()))
+        if (!show.getUser().getUid().equals(user.getUid()))
             throw new UnauthorizedException("Unauthorized. Please log in.");
 
         showRepository.delete(show);
@@ -67,7 +67,7 @@ public class ShowServiceImpl implements ShowService {
         Show show = showRepository.findById(showId)
                 .orElseThrow(() -> new NotFoundException("Show not found."));
 
-        if (!show.user().uid().equals(user.uid()))
+        if (!show.getUser().getUid().equals(user.getUid()))
             throw new UnauthorizedException("Unauthorized. Please log in.");
 
         return show;
