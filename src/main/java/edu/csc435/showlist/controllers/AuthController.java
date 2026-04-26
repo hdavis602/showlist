@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping(value="/auth")
+@RequestMapping(value="showlist/auth")
 public class AuthController {
 
     private final AuthService authService;
@@ -29,8 +29,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
-        String username = body.get("Username");
-        String password = body.get("Password");
+        String username = body.get("username");
+        String password = body.get("password");
 
         User user = authService.login(username, password);
 
