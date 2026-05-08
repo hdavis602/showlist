@@ -25,7 +25,7 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
-    public Show addShow(User user, String title, String status) {
+    public Show addShow(User user, String title, String status) { //needs to handle bad status input
         if (title == null|| status == null) {
             log.warn("addShow: invalid input (title={}, status={})", title, status);
             throw new BadRequestException("Invalid input.");

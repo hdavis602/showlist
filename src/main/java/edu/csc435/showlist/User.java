@@ -25,6 +25,7 @@ public class User {
     public User(String provider, String providerId, String email) {
         this.provider = provider;
         this.providerId = providerId;
+        this.email = email;
     }
 
     public void setShows (List<Show> shows) {this.shows = shows;}

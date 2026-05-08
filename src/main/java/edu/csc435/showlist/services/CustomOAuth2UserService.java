@@ -17,9 +17,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         this.userService = userService;
     }
 
+    protected OAuth2User loadUserFromProvider(OAuth2UserRequest req) { //for testing
+        return super.loadUser(req);
+    }
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest req) {
-        OAuth2User oAuth2User = super.loadUser(req);
+        OAuth2User oAuth2User = loadUserFromProvider(req);
 
         String provider = req.getClientRegistration().getRegistrationId();
         String providerId = oAuth2User.getAttribute("sub");
