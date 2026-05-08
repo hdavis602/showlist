@@ -1,80 +1,15 @@
-# CSC435 Homework 5: Spring Boot
+# CSC435 Final Project: Spring Boot App
 
 ## Running the Showlist application
 
 - URL: http://localhost:8080/showlist
-- NOTE: Since authentication is not a concern for this assignment, some endpoints work differently than the final design, most notably the authentication endpoints.
 
 --------
 
 ## Endpoints
 
-### POST '/auth/register'
-Registers a user in the database.
-
-Request Body:  
-> {  
->   "username" : [username],  
->   "password" : [password]  
-> }  
-
-Possible Responses:  
-> 200 OK  
-> {  
->   "uid" : [uid]  
-> }  
----
-> 400 BAD REQUEST  
-> {  
->   "error" : "Invalid input."  
-> }
----
-> 400 BAD REQUEST  
-> {  
->   "error" : "Username already exists."  
-> }
-
-### POST '/auth/login'
-Creates a session associated with the user, allowing them to access their shows.
-CURRENTLY: returns the UID of a user if they are registered.
-
-Request Body:  
-> {  
->   "username" : [username],  
->   "password" : [password]  
-> }
-
-Possible Responses:  
-> 200 OK  
-> {  
->   "uid" : [uid]  
-> }
----
-> 400 BAD REQUEST  
-> {  
->   "error" : "Invalid input."  
-> }
----
-> 401 UNAUTHORIZED  
-> {  
->   "error" : "Invalid username or password."  
-> }
----
-
-### DELETE '/auth/logout'
-Ends the user's session.
-CURRENTLY: Does nothing.
-
-Possible Responses:  
-> 204 NO CONTENT
-
 ### GET '/shows'
-Returns the list of shows associated with the user.
-
-Request Body:  
-> {  
->   "uid" : [uid]*  
-> }
+Returns the list of shows associated with the current user.
 
 Possible Responses:  
 > 200 OK  
@@ -90,21 +25,16 @@ Possible Responses:
 ---
 > 400 BAD REQUEST  
 > {  
->   "error" : "Invalid input."  
+>   "error" : "Invalid input."
 > }
 ---
 > 401 UNAUTHORIZED  
 > {  
->   "error" : "Invalid user id."  
+>   "error" : "Invalid credentials."  
 > }
 
 ### GET '/shows/{showId}'
 Returns the information for the show of the associated showId.
-
-Request Body:
-> {  
->   "uid" : [uid]*  
-> }
 
 Possible Responses:  
 > 200 OK  
@@ -153,7 +83,7 @@ Possible Responses:
 ---
 > 401 UNAUTHORIZED  
 > {  
->   "error" : "Invalid user id."  
+>   "error" : "Unauthorized. Please log in."  
 > }
 
 ### PATCH '/shows/{showId}'

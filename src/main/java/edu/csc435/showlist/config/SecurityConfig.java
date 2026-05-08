@@ -1,13 +1,23 @@
 package edu.csc435.showlist.config;
 
+import edu.csc435.showlist.services.CustomOAuth2UserService;
 import org.springframework.context.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/", "/public/**").permitAll().anyRequest().authenticated())
+                .oauth2Login(oauth -> oauth.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)))
+                .logout(logout -> logout.logoutSuccessUrl("/"))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, authEx) -> res.sendError(401)));
 
+        return http.build();
+    }
 }
+
