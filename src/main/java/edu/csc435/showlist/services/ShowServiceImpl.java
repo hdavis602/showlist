@@ -25,20 +25,25 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
-    public Show addShow(User user, String title, String status) { //needs to handle bad status input
+    public Show addShow(User user, String title, String status) {
         if (title == null|| status == null) {
             log.warn("addShow: invalid input (title={}, status={})", title, status);
             throw new BadRequestException("Invalid input.");
         }
 
-        Show show = new Show(user, title, Status.fromString(status));
-        return showRepository.save(show);
+        try {
+            Show show = new Show(user, title, Status.fromString(status));
+            return showRepository.save(show);
+        } catch (IllegalArgumentException e) {
+            log.warn("addShow: invalid status input: {}", status);
+            throw new BadRequestException("Invalid input.");
+        }
     }
 
     @Override
-    public Show updateShow(User user, UUID showId, String status, Integer rating) {
-        if (showId == null || (status == null && rating == null)) {
-            log.warn("updateShow: invalid input (showId={}, title={}, status={})", showId, status, rating);
+    public Show updateShow(User user, UUID showId, String newStatus, Integer newRating) {
+        if (showId == null || (newStatus == null && newRating == null)) {
+            log.warn("updateShow: invalid input (showId={}, title={}, status={})", showId, newStatus, newRating);
             throw new BadRequestException("Invalid input.");
         }
 
@@ -51,10 +56,16 @@ public class ShowServiceImpl implements ShowService {
             log.warn("updateShow: user mismatch (uid={}, expects {})", user.getUid(), show.getUser().getUid());
             throw new UnauthorizedException("Invalid credentials to access resource.");
         }
-        if (status != null) show.setStatus(status);
-        if (rating != null) show.setRating(rating);
 
-        return showRepository.save(show);
+        try {
+            if (newStatus != null) show.setStatus(newStatus);
+            if (newRating != null) show.setRating(newRating);
+            return showRepository.save(show);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("updateShow: invalid status input: {}", newStatus);
+            throw new BadRequestException("Invalid input.");
+        }
     }
 
     @Override

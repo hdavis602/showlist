@@ -28,6 +28,7 @@ public class User {
         this.email = email;
     }
 
+    public void setUid(UUID uid) {if (this.uid == null) this.uid = uid;} //intended for testing
     public void setShows (List<Show> shows) {this.shows = shows;}
 
     public UUID getUid() {return uid;}

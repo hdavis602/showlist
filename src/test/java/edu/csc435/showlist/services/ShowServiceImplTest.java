@@ -31,7 +31,9 @@ class ShowServiceImplTest {
     @BeforeEach
     void setup() {
         user = new User("google", "123", "test@example.com");
+        user.setUid(UUID.randomUUID());
         otherUser = new User("google", "999", "other@example.com");
+        otherUser.setUid(UUID.randomUUID());
     }
 
     // addShow() TESTS
@@ -56,7 +58,7 @@ class ShowServiceImplTest {
     }
 
     @Test
-    void addShow_invalidStatus_throws() { //Unexpected exception type thrown, expected: <edu.csc435.showlist.exceptions.BadRequestException> but was: <java.lang.IllegalArgumentException>
+    void addShow_invalidStatus_throws() {
         assertThrows(BadRequestException.class, () ->
                 showService.addShow(user, "Breaking Bad", "INVALID")
         );
