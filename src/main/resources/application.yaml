@@ -1,6 +1,14 @@
 spring:
   application:
     name: showlist
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: CLIENT_ID
+            client-secret: CLIENT_SECRET
+            scope: openid, profile, email
 
   datasource:
     url: jdbc:h2:file:./data/showlist
