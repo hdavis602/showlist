@@ -42,9 +42,7 @@ class ShowControllerTest {
 
     @Test
     void getShows_returnsList() {
-        List<Show> shows = List.of(
-                new Show(user, "Breaking Bad", Status.IN_PROGRESS)
-        );
+        List<Show> shows = List.of(new Show(user, "Breaking Bad", Status.IN_PROGRESS));
 
         when(showService.getShows(user)).thenReturn(shows);
 
@@ -86,11 +84,9 @@ class ShowControllerTest {
     void getShow_notFound() {
         UUID id = UUID.randomUUID();
 
-        when(showService.getShow(user, id))
-                .thenThrow(new NotFoundException("Show not found"));
+        when(showService.getShow(user, id)).thenThrow(new NotFoundException("Show not found"));
 
-        NotFoundException ex = assertThrows(NotFoundException.class,
-                () -> controller.getShow(id, principal));
+        NotFoundException ex = assertThrows(NotFoundException.class, () -> controller.getShow(id, principal));
 
         ResponseEntity<?> response = handler.handleNotFound(ex);
 
@@ -107,13 +103,9 @@ class ShowControllerTest {
         Show show = mock(Show.class);
         when(show.getShowId()).thenReturn(id);
 
-        when(showService.addShow(user, "Breaking Bad", "In Progress"))
-                .thenReturn(show);
+        when(showService.addShow(user, "Breaking Bad", "In Progress")).thenReturn(show);
 
-        Map<String, String> body = Map.of(
-                "title", "Breaking Bad",
-                "status", "In Progress"
-        );
+        Map<String, String> body = Map.of("title", "Breaking Bad", "status", "In Progress");
 
         ResponseEntity<?> response = controller.addShow(body, principal);
 
@@ -123,17 +115,12 @@ class ShowControllerTest {
 
     @Test
     void addShow_invalidStatus() {
-        Map<String, String> body = Map.of(
-                "title", "Breaking Bad",
-                "status", "INVALID"
-        );
+        Map<String, String> body = Map.of("title", "Breaking Bad", "status", "INVALID");
 
-        when(showService.addShow(user, "Breaking Bad", "INVALID"))
-                .thenThrow(new BadRequestException("Invalid status"));
+        when(showService.addShow(user, "Breaking Bad", "INVALID")).thenThrow(new BadRequestException("Invalid status"));
 
 
-        BadRequestException ex = assertThrows(BadRequestException.class,
-                () -> controller.addShow(body, principal));
+        BadRequestException ex = assertThrows(BadRequestException.class, () -> controller.addShow(body, principal));
 
         ResponseEntity<?> response = handler.handleBadRequest(ex);
 
@@ -149,8 +136,7 @@ class ShowControllerTest {
         UUID id = UUID.randomUUID();
         Show updated = new Show(user, "Breaking Bad", Status.COMPLETED);
 
-        when(showService.updateShow(user, id, "Completed", null))
-                .thenReturn(updated);
+        when(showService.updateShow(user, id, "Completed", null)).thenReturn(updated);
 
         Map<String, Object> body = Map.of("status", "Completed");
 
@@ -165,12 +151,10 @@ class ShowControllerTest {
         UUID id = UUID.randomUUID();
         Map<String, Object> body = Map.of("status", "COMPLETED");
 
-        when(showService.updateShow(user, id, "COMPLETED", null))
-                .thenThrow(new UnauthorizedException("Invalid credentials to access resource."));
+        when(showService.updateShow(user, id, "COMPLETED", null)).thenThrow(new UnauthorizedException("Invalid credentials to access resource."));
 
 
-        UnauthorizedException ex = assertThrows(UnauthorizedException.class,
-                () -> controller.updateShow(id, body, principal));
+        UnauthorizedException ex = assertThrows(UnauthorizedException.class, () -> controller.updateShow(id, body, principal));
 
         ResponseEntity<?> response = handler.handleUnauthorized(ex);
 
@@ -195,11 +179,9 @@ class ShowControllerTest {
     void deleteShow_notFound() {
         UUID id = UUID.randomUUID();
 
-        doThrow(new NotFoundException("Show not found"))
-                .when(showService).deleteShow(user, id);
+        doThrow(new NotFoundException("Show not found")).when(showService).deleteShow(user, id);
 
-        NotFoundException ex = assertThrows(NotFoundException.class,
-                () -> controller.deleteShow(id, principal));
+        NotFoundException ex = assertThrows(NotFoundException.class, () -> controller.deleteShow(id, principal));
 
         ResponseEntity<?> response = handler.handleNotFound(ex);
 

@@ -39,13 +39,13 @@ class ShowServiceImplTest {
     // addShow() TESTS
 
     @Test
-    void addShow_success() {
-        Show saved = new Show(user, "Breaking Bad", Status.IN_PROGRESS);
+    void addShow_createsNewShow() {
+        Show saved = new Show(user, "Scavenger's Reign", Status.IN_PROGRESS);
         when(showRepository.save(any())).thenReturn(saved);
 
-        Show result = showService.addShow(user, "Breaking Bad", "In Progress");
+        Show result = showService.addShow(user, "Scavenger's Reign", "In Progress");
 
-        assertEquals("Breaking Bad", result.getTitle());
+        assertEquals("Scavenger's Reign", result.getTitle());
         assertEquals(Status.IN_PROGRESS, result.getStatus());
         verify(showRepository).save(any());
     }
@@ -60,7 +60,7 @@ class ShowServiceImplTest {
     @Test
     void addShow_invalidStatus_throws() {
         assertThrows(BadRequestException.class, () ->
-                showService.addShow(user, "Breaking Bad", "INVALID")
+                showService.addShow(user, "Scavenger's Reign", "INVALID")
         );
     }
 
@@ -69,8 +69,8 @@ class ShowServiceImplTest {
     @Test
     void getShows_returnsList() {
         List<Show> shows = List.of(
-                new Show(user, "A", Status.IN_PROGRESS),
-                new Show(user, "B", Status.COMPLETED)
+                new Show(user, "ATitle", Status.IN_PROGRESS),
+                new Show(user, "BTitle", Status.COMPLETED)
         );
 
         when(showRepository.findByUser(user)).thenReturn(shows);
@@ -83,7 +83,7 @@ class ShowServiceImplTest {
 
     // updateShow() TESTS
     @Test
-    void updateShow_success() { //NullPointer Cannot invoke "java.util.UUID.equals(Object)" because the return value of "edu.csc435.showlist.User.getUid()" is null
+    void updateShow_updatesShow() {
         UUID id = UUID.randomUUID();
         Show existing = new Show(user, "Title", Status.IN_PROGRESS);
 
@@ -108,7 +108,7 @@ class ShowServiceImplTest {
     }
 
     @Test
-    void updateShow_wrongUser_throws() { //Unexpected exception type thrown, expected: <edu.csc435.showlist.exceptions.UnauthorizedException> but was: <java.lang.NullPointerException>
+    void updateShow_wrongUser_throws() {
         UUID id = UUID.randomUUID();
         Show existing = new Show(otherUser, "Title", Status.IN_PROGRESS);
 
@@ -120,21 +120,19 @@ class ShowServiceImplTest {
     }
 
     @Test
-    void updateShow_invalidStatus_throws() { //Unexpected exception type thrown, expected: <edu.csc435.showlist.exceptions.BadRequestException> but was: <java.lang.NullPointerException>
+    void updateShow_invalidStatus_throws() {
         UUID id = UUID.randomUUID();
         Show existing = new Show(user, "Title", Status.IN_PROGRESS);
 
         when(showRepository.findById(id)).thenReturn(Optional.of(existing));
 
-        assertThrows(BadRequestException.class, () ->
-                showService.updateShow(user, id, "INVALID", null)
-        );
+        assertThrows(BadRequestException.class, () -> showService.updateShow(user, id, "INVALID", null));
     }
 
     // deleteShow() TESTS
 
     @Test
-    void deleteShow_success() { //NullPointer Cannot invoke "java.util.UUID.equals(Object)" because the return value of "edu.csc435.showlist.User.getUid()" is null
+    void deleteShow_deletesShow() {
         UUID id = UUID.randomUUID();
         Show existing = new Show(user, "Title", Status.IN_PROGRESS);
 
@@ -156,7 +154,7 @@ class ShowServiceImplTest {
     }
 
     @Test
-    void deleteShow_wrongUser_throws() { //Unexpected exception type thrown, expected: <edu.csc435.showlist.exceptions.UnauthorizedException> but was: <java.lang.NullPointerException>
+    void deleteShow_wrongUser_throws() {
         UUID id = UUID.randomUUID();
         Show existing = new Show(otherUser, "Title", Status.IN_PROGRESS);
 

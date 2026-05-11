@@ -30,7 +30,7 @@ Possible Responses:
 ---
 > 401 UNAUTHORIZED  
 > {  
->   "error" : "Invalid credentials."  
+>   "error" : "Invalid credentials to access resource."  
 > }
 
 ### GET '/shows/{showId}'
@@ -52,7 +52,7 @@ Possible Responses:
 ---
 > 401 UNAUTHORIZED  
 > {  
->   "error" : "Unauthorized. Please log in."  
+>   "error" : "Invalid credentials to access resource."  
 > }
 ---
 > 404 NOT FOUND  
@@ -65,7 +65,6 @@ Adds a show associated with the user to the database.
 
 Request Body:
 > {  
->   "uid" : [uid]*,  
 >   "title" : [title],  
 >   "status" : [status]  
 > }
@@ -83,15 +82,14 @@ Possible Responses:
 ---
 > 401 UNAUTHORIZED  
 > {  
->   "error" : "Unauthorized. Please log in."  
+>   "error" : "Invalid credentials to access resource."  
 > }
 
 ### PATCH '/shows/{showId}'
 Updates the status or rating of a show of the associated showId.
 
 Request Body:
-> {  
->   "uid" : [uid]*,  
+> {
 >   "status" : [newStatus],  
 >   "rating" : [newRating]  
 > }
@@ -112,7 +110,7 @@ Possible Responses:
 ---
 > 401 UNAUTHORIZED  
 > {  
->   "error" : "Unauthorized. Please log in."  
+>   "error" : "Invalid credentials to access resource."  
 > }
 ---
 > 404 NOT FOUND  
@@ -122,11 +120,6 @@ Possible Responses:
 
 ### DELETE '/shows/{showId}'
 Deletes the show of the associated showId.
-
-Request Body:
-> {  
->   "uid" : [uid]*  
-> }
 
 Possible Responses:  
 > 204 NO CONTENT
@@ -138,12 +131,10 @@ Possible Responses:
 ---
 > 401 UNAUTHORIZED  
 > {  
->   "error" : "Unauthorized. Please log in."  
+>   "error" : "Invalid credentials to access resource."  
 > }
 ---
 > 404 NOT FOUND  
 > {  
 >   "error" : "Show not found."  
 > }
-
-*The addition of a UID in the request body acts as access control before proper authentication is implemented. 

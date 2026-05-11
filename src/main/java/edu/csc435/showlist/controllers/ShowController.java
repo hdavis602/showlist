@@ -2,8 +2,7 @@ package edu.csc435.showlist.controllers;
 
 import edu.csc435.showlist.Show;
 import edu.csc435.showlist.User;
-import edu.csc435.showlist.services.UserService;
-import edu.csc435.showlist.services.ShowService;
+import edu.csc435.showlist.services.*;
 
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,20 +23,20 @@ public class ShowController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping // GET showlist/shows
     public ResponseEntity<?> getShows(@AuthenticationPrincipal OAuth2User principal) {
         User user = resolveUser(principal);
         return ResponseEntity.ok(showService.getShows(user));
     }
 
-    @GetMapping("/{showId}")
+    @GetMapping("/{showId}") // GET showlist/shows/{showId}
     public ResponseEntity<?> getShow(@PathVariable UUID showId, @AuthenticationPrincipal OAuth2User principal) {
         User user = resolveUser(principal);
         Show show = showService.getShow(user, showId);
         return ResponseEntity.ok(show);
     }
 
-    @PostMapping("/addshow")
+    @PostMapping("/addshow") // POST showlist/shows/addshow
     public ResponseEntity<?> addShow(@RequestBody Map<String, String> body, @AuthenticationPrincipal OAuth2User principal) {
         String title = body.get("title");
         String status = body.get("status");
@@ -47,7 +46,7 @@ public class ShowController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("showId", show.getShowId()));
     }
 
-    @PatchMapping("/{showId}")
+    @PatchMapping("/{showId}") //PATCH showlist/shows/{showId}
     public ResponseEntity<?> updateShow(@PathVariable UUID showId, @RequestBody Map<String, Object> body,  @AuthenticationPrincipal OAuth2User principal) {
         String status = null;
         if (body.get("status") != null) {
@@ -66,7 +65,7 @@ public class ShowController {
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{showId}")
+    @DeleteMapping("/{showId}") //DELETE showlist.shows/{showid}
     public ResponseEntity<?> deleteShow(@PathVariable UUID showId, @AuthenticationPrincipal OAuth2User principal) {
         User user = resolveUser(principal);
         showService.deleteShow(user, showId);

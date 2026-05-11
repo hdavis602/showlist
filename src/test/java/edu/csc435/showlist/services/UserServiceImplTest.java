@@ -21,14 +21,13 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    // getUser() tests
+    // getUser() TESTS
 
     @Test
     void getUser_returnsUser_whenFound() {
         User user = new User("google", "12345", "test@example.com");
 
-        when(userRepository.findByProviderAndProviderId("google", "12345"))
-                .thenReturn(Optional.of(user));
+        when(userRepository.findByProviderAndProviderId("google", "12345")).thenReturn(Optional.of(user));
 
         User result = userService.getUser("google", "12345");
 
@@ -39,22 +38,18 @@ class UserServiceImplTest {
 
     @Test
     void getUser_throwsUnauthorized_whenNotFound() {
-        when(userRepository.findByProviderAndProviderId("google", "12345"))
-                .thenReturn(Optional.empty());
+        when(userRepository.findByProviderAndProviderId("google", "12345")).thenReturn(Optional.empty());
 
-        assertThrows(UnauthorizedException.class, () ->
-                userService.getUser("google", "12345")
-        );
+        assertThrows(UnauthorizedException.class, () -> userService.getUser("google", "12345"));
     }
 
-    // findOrCreate() tests
+    // findOrCreate() TESTS
 
     @Test
     void findOrCreate_returnsExistingUser() {
         User existing = new User("google", "12345", "test@example.com");
 
-        when(userRepository.findByProviderAndProviderId("google", "12345"))
-                .thenReturn(Optional.of(existing));
+        when(userRepository.findByProviderAndProviderId("google", "12345")).thenReturn(Optional.of(existing));
 
         User result = userService.findOrCreate("google", "12345", "test@example.com");
 
@@ -64,8 +59,7 @@ class UserServiceImplTest {
 
     @Test
     void findOrCreate_createsNewUser_whenNotFound() {
-        when(userRepository.findByProviderAndProviderId("google", "12345"))
-                .thenReturn(Optional.empty());
+        when(userRepository.findByProviderAndProviderId("google", "12345")).thenReturn(Optional.empty());
 
         User saved = new User("google", "12345", "test@example.com");
         when(userRepository.save(any(User.class))).thenReturn(saved);
